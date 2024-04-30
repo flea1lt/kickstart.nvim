@@ -545,6 +545,21 @@ require('lazy').setup({
               vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
             end, '[T]oggle Inlay [H]ints')
           end
+
+          -- CUSTOM
+          if client and client.name == 'gopls' then
+            if not client.server_capabilities.semanticTokensProvider then
+              local semantic = client.config.capabilities.textDocument.semanticTokens
+              client.server_capabilities.semanticTokensProvider = {
+                full = true,
+                legend = {
+                  tokenTypes = semantic.tokenTypes,
+                  tokenModifiers = semantic.tokenModifiers,
+                },
+                range = true,
+              }
+            end
+          end
         end,
       })
 
@@ -623,6 +638,7 @@ require('lazy').setup({
         -- tsserver = {},
         --
 
+        ruff = {},
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
@@ -864,7 +880,17 @@ require('lazy').setup({
       -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
       -- - sd'   - [S]urround [D]elete [']quotes
       -- - sr)'  - [S]urround [R]eplace [)] [']
-      require('mini.surround').setup()
+      require('mini.surround').setup {
+        mappings = {
+          add = 'gza', -- Add surrounding in Normal and Visual modes
+          delete = 'gzd', -- Delete surrounding
+          find = 'gzf', -- Find surrounding (to the right)
+          find_left = 'gzF', -- Find surrounding (to the left)
+          highlight = 'gzh', -- Highlight surrounding
+          replace = 'gzr', -- Replace surrounding
+          update_n_lines = 'gzn', -- Update `n_lines`
+        },
+      }
 
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
@@ -889,7 +915,26 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'rust', 'toml', 'ron', 'go', 'gomod', 'gowork', 'gosum' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'vim',
+        'vimdoc',
+        'rust',
+        'toml',
+        'ron',
+        'go',
+        'gomod',
+        'gowork',
+        'gosum',
+        'ninja',
+        'python',
+        'rst',
+      },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {

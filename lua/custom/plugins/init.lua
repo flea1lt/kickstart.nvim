@@ -36,7 +36,51 @@ return {
         translator = false,
         translate_problems = false,
       },
+      injector = {
+        ['golang'] = {
+          before = { 'package main' },
+        },
+      },
+      hooks = {
+        ---@type fun(question: lc.ui.Question)[]
+        -- FIXME:
+        -- lsp report `go.mod file not found in current directory or any parent directory` error even the lsp is running single file mode.
+        -- maybe some config for lspconfig could fix this
+        ['question_enter'] = {
+          function(q)
+            if q.lang == 'golang' then
+              if vim.fn.filereadable(vim.fn.stdpath 'data' .. '/leetcode/go.mod') == 0 then
+                -- automatically create go mod file before enter go question
+                vim.fn.system 'go mod init leetcode'
+              end
+            end
+          end,
+        },
+      },
     },
+  },
+
+  -- leap
+  {
+    'ggandor/leap.nvim',
+    enabled = true,
+    dependencies = {
+      { 'tpope/vim-repeat', event = 'VeryLazy' },
+    },
+    keys = {
+      { 's', mode = { 'n', 'x', 'o' }, desc = 'Leap Forward to' },
+      { 'S', mode = { 'n', 'x', 'o' }, desc = 'Leap Backward to' },
+      { 'gs', mode = { 'n', 'x', 'o' }, desc = 'Leap from Windows' },
+    },
+    config = function(_, opts)
+      local leap = require 'leap'
+      for k, v in pairs(opts) do
+        leap.opts[k] = v
+      end
+      leap.add_default_mappings(true)
+      vim.keymap.del({ 'x', 'o' }, 'x')
+      vim.keymap.del({ 'x', 'o' }, 'X')
+    end,
   },
 
   -- lazygit
@@ -154,6 +198,7 @@ return {
     },
   },
 
+  -- go.nvim
   {
     'ray-x/go.nvim',
     dependencies = { -- optional packages
@@ -169,8 +214,44 @@ return {
     build = ':lua require("go.install").update_all_sync()', -- if you need to install/update all binaries
   },
 
-  -- neotest-go
+  -- neotest
   {
-    'nvim-neotest/neotest-go',
+    'nvim-neotest/neotest',
+    optional = true,
+    dependencies = {
+      'nvim-neotest/neotest-go',
+      'nvim-neotest/neotest-python',
+    },
+    opts = {
+      adapters = {
+        ['neotest-go'] = {
+          -- Here we can set options for neotest-go, e.g.
+          -- args = { "-tags=integration" }
+          recursive_run = true,
+        },
+        ['neotest-python'] = {
+          -- Here you can specify the settings for the adapter, i.e.
+          -- runner = "pytest",
+          -- python = ".venv/bin/python",
+        },
+      },
+    },
+  },
+
+  -- venv-selector
+  {
+    'linux-cultist/venv-selector.nvim',
+    cmd = 'VenvSelect',
+    opts = function(_, opts)
+      return vim.tbl_deep_extend('force', opts, {
+        name = {
+          'venv',
+          '.venv',
+          'env',
+          '.env',
+        },
+      })
+    end,
+    keys = { { '<leader>cv', '<cmd>:VenvSelect<cr>', desc = 'Select VirtualEnv' } },
   },
 }
