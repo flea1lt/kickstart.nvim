@@ -30,7 +30,7 @@ return {
     },
     opts = {
       arg = 'leetcode.nvim',
-      lang = 'rust',
+      lang = 'golang',
       cn = {
         enabled = true,
         translator = false,
