@@ -916,26 +916,8 @@ require('lazy').setup({
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     opts = {
-      ensure_installed = {
-        'bash',
-        'c',
-        'html',
-        'lua',
-        'luadoc',
-        'markdown',
-        'vim',
-        'vimdoc',
-        'rust',
-        'toml',
-        'ron',
-        'go',
-        'gomod',
-        'gowork',
-        'gosum',
-        'ninja',
-        'python',
-        'rst',
-      },
+      -- stylua: ignore
+      ensure_installed = { 'bash', 'c', 'html', 'lua', 'luadoc', 'markdown', 'vim', 'vimdoc', 'rust', 'toml', 'ron', 'go', 'gomod', 'gowork', 'gosum', 'ninja', 'python', 'rst' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {
