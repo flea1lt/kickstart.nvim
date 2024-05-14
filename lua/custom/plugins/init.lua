@@ -27,6 +27,7 @@ return {
       { '<leader>lr', '<cmd>Leet run<cr>', desc = '[L]eetcode [R]un' },
       { '<leader>ls', '<cmd>Leet submit<cr>', desc = '[L]eetcode [S]ubmit' },
       { '<leader>ll', '<cmd>Leet lang<cr>', desc = '[L]eetcode [L]anguage' },
+      { '<leader>lc', '<cmd>Leet console<cr>', desc = '[L]eetcode Console' },
     },
     opts = {
       arg = 'leetcode.nvim',
