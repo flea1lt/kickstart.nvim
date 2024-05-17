@@ -114,6 +114,16 @@ return {
     },
   },
 
+  -- toggleterm
+  {
+    'akinsho/toggleterm.nvim',
+    version = '*',
+    keys = {
+      { '<leader>T', '<cmd>ToggleTerm<cr>', desc = 'Open ToggleTerm' },
+    },
+    config = true,
+  },
+
   -- flash
   {
     'folke/flash.nvim',
