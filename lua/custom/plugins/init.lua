@@ -31,7 +31,7 @@ return {
     },
     opts = {
       arg = 'leetcode.nvim',
-      lang = 'golang',
+      lang = 'rust',
       cn = {
         enabled = true,
         translator = false,
@@ -176,12 +176,6 @@ return {
   {
     'mrcjkb/rustaceanvim',
     version = '^4',
-    dependencies = {
-      {
-        'lvimuser/lsp-inlayhints.nvim',
-        opts = {},
-      },
-    },
     ft = { 'rust' },
     keys = {
       {
@@ -192,18 +186,12 @@ return {
       },
     },
     opts = {
-      inlay_hints = {
-        highlight = 'NonText',
-      },
       tools = {
         hover_actions = {
           auto_focus = true,
         },
       },
       server = {
-        on_attach = function(client, bufnr)
-          require('lsp-inlayhints').on_attach(client, bufnr)
-        end,
         default_settings = {
           ['rust-analyzer'] = {
             cargo = {
@@ -254,7 +242,6 @@ return {
   -- bufferline
   {
     'akinsho/bufferline.nvim',
-    version = '*',
     -- `BufReadPre` event to prevent show a `No Name` buffer when open a directory use nvim directly
     event = 'BufReadPre',
     dependencies = {
